@@ -1,17 +1,15 @@
 package com.document.scanner.flutter.document_scanner_flutter
 
-import android.app.Activity
-import android.app.ActivityOptions
-import android.content.Intent
-import android.net.Uri
-import android.os.Environment
-import android.os.StrictMode
-import android.provider.MediaStore
-import android.util.Log
-import android.view.View
-import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat
 //import com.scanlibrary.ScanActivity
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.annotation.NonNull
+import com.scanlibrary.ScanActivity
+import com.scanlibrary.ScanConstants
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -20,18 +18,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import android.R.attr.data
-import android.content.Context
-import android.database.Cursor
-import androidx.core.net.toFile
-import com.scanlibrary.ScanActivity
-import com.scanlibrary.ScanConstants
-import kotlin.collections.HashMap
 
 
 /** DocumentScannerFlutterPlugin */
@@ -112,6 +99,7 @@ class DocumentScannerFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityA
         activityPluginBinding?.activity?.apply {
             val intent = Intent(this, ScanActivity::class.java)
             intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE,  ScanConstants.OPEN_CAMERA)
+            intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             composeIntentArguments(intent)
             startActivityForResult(intent, SCAN_REQUEST_CODE)
         }
